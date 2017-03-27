@@ -12,16 +12,19 @@ export default Ember.TextField.extend({
     return this.get('dateFormat');
   }),
 
-  dateFormat: 'MM/DD/YYYY',
+  dateFormat: 'YYYY-MM-DD',
 
-  updateValueOnInit: Ember.on('init', function(){
+  updateValueOnInit: Ember.on('didInsertElement', function(){
     this.updateValue();
   }),
 
   updateDate: Ember.observer('value', function(){
+    console.log(`${this.get('value')} ${this.get('dateFormat')}`);
     let date = moment.utc(this.get('value'), this.get('dateFormat'));
     if(date && date.isValid()){
       this.set('date', date);
+    } else {
+      console.warn(`Invalid Date ${this.get('value')} for format ${this.get('dateFormat')}`);
     }
   }),
 
