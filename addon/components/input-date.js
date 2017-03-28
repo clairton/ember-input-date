@@ -4,7 +4,6 @@ import Ember from 'ember';
 import moment from 'moment';
 
 export default Ember.TextField.extend({
-  type: 'date',
 
   hasFocus: false,
 
@@ -12,14 +11,23 @@ export default Ember.TextField.extend({
     return this.get('dateFormat');
   }),
 
-  dateFormat: 'YYYY-MM-DD',
+  dateFormat: 'DD/MM/YYYY',
+
+  datePattern: '99/99/9999',
 
   updateValueOnInit: Ember.on('didInsertElement', function(){
+    let pattern = this.get('datePattern');
+    console.debug(`Vanilla Masker ${pattern}`)
+    VMasker(this.$()).maskPattern(pattern);
     this.updateValue();
   }),
 
+  removeMask: Ember.on('willDestroyElement', function(){
+    VMasker(this.$()).unMask();
+  }),
+
   updateDate: Ember.observer('value', function(){
-    console.log(`${this.get('value')} ${this.get('dateFormat')}`);
+    console.debug(`${this.get('value')} ${this.get('dateFormat')}`);
     let date = moment.utc(this.get('value'), this.get('dateFormat'));
     if(date && date.isValid()){
       this.set('date', date);

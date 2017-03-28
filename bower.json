@@ -1,5 +1,6 @@
 {
   "name": "ember-input-date",
   "dependencies": {
+    "vanilla-masker": "^1.1.1"
   }
 }
