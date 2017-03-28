@@ -18,14 +18,15 @@ module.exports = {
   // }
 
   included: function(app) {
-    this._super.included(app);
-    app.import('bower_components/vanilla-masker/build/vanilla-masker.min.js');
+    this._super.included.apply(this, app);
+    this.ui.writeLine('Include vanilla-masker in ember-cli-build.js');
+    app.import(app.bowerDirectory + '/vanilla-masker/build/vanilla-masker.min.js');
   },
 
   afterInstall: function() {
-    return this.addAddonToProject('ember-cli-moment-shim', '^3.0.0')
+    return this.addAddonToProject([{'ember-cli-moment-shim', '^3.0.0'}])
     .then(() => {
-      this.addBowerPackageToProject('vanilla-masker', '^1.1.1');
+      this.addBowerPackageToProject([{'vanilla-masker', '^1.1.1'}]);
     });
   }
 };
